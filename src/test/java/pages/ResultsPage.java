@@ -1,26 +1,38 @@
 package pages;
-import base.BasePage;
+import baseClasses.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import java.util.List;
-import java.util.NoSuchElementException;
+
 
 public class ResultsPage extends BasePage {
-    private By videos = By.cssSelector("ytd-video-renderer a#thumbnail");
-
     public ResultsPage(WebDriver driver) {
         super(driver);
     }
+    private final String VIDEO_LIST = "//ytd-thumbnail[@class='style-scope ytd-video-renderer']";
+    private final String NAME_VIDEO = "//yt-formatted-string[contains(@class, 'ytd-video-renderer')]";
 
-    public void clickFourthVideo() {
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(videos));
-        List<WebElement> videoList = driver.findElements(videos);
-        if (videoList.size() >= 4) {
-            videoList.get(3).click();  // 0-based
-        } else {
-            throw new NoSuchElementException("Not enough videos in results.");
-        }
+    public void clickOnVideoByIndex(int index) {
+
+
+
+
+
+        // цей двіж треба обробить іф-ом
+        // бо якщо це не відео а посилання на інший сайт то тест відпрацьоватиме не вірно
+        // тому потрібно його переривати з відповідним ексепшеном,
+        // типу на 4-му місці не відео а посилання на інший ресур
+
+
+//        if ()
+//
+        try {
+            clickOnElementByIndex(VIDEO_LIST, index);
+       } catch (Exception e) {
+           throw new RuntimeException("Помилка при кліку на відео за індексом " + index, e);
+      }
     }
-}
+
+    }

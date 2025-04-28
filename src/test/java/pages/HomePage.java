@@ -1,37 +1,30 @@
 package pages;
 
-import base.BasePage;
-import base.TestInit;
-import org.openqa.selenium.Keys;
+import baseClasses.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 
 public class HomePage extends BasePage {
-    private final String searchInputXpath = "//input[@name='search_query']";
-    private final String suggestionsXpath = "//div[@class='ytSuggestionComponentSuggestion ytSuggestionComponentSuggestionHover'][2]";
-
     public HomePage(WebDriver driver) {
         super(driver);
     }
 
-    public void openHomePage() {
-        TestInit.openUrl("https://www.youtube.com/");
+    private final String INPUT_FIELD = "//input[@name='search_query']";
+    private final String SUGGESTIONS_DROP_DOWN_MENU = "//div[@class='ytSuggestionComponentSuggestion ytSuggestionComponentSuggestionHover']";
+
+    public WebElement searchInputField() {
+        return visibilityOfElementLocatedByXpath(INPUT_FIELD);
     }
 
-    public void enterSearchQuery(String query) {
-        WebElement searchInput = visibilityOfElementByXpath(searchInputXpath);
-        searchInput.click();
-        searchInput.clear();
-        searchInput.sendKeys(query);
-        searchInput.sendKeys(Keys.SPACE); // стимулюємо появу автопідказок
+    public HomePage enterSearchQuery(String query) {
+        searchInputField().sendKeys(query);
+//        searchInputField().sendKeys(Keys.SPACE); // стимулюємо появу автопідказок
+        return this;
     }
 
-    public void clickSecondSuggestion() {
-        visibilityOfElementByXpath(suggestionsXpath).click();
-    }
-
-    public String getTitle() {
-        return driver.getTitle();
+    public HomePage clickSuggestionFieldInDropDownMenuByIndex(int indexSuggestions) {
+        clickOnElementByIndex(SUGGESTIONS_DROP_DOWN_MENU, indexSuggestions);
+        return this;
     }
 }
