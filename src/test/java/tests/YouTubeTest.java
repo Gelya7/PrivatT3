@@ -22,7 +22,6 @@ public class YouTubeTest extends TestInit {
         String expTitleHomePage = "YouTube";
         int fourSymbols = 4;
         int secondSuggestionField = 1;
-        int fourthVideo = 3;
 
         HomePage homePage = new HomePage(driver);
         ResultsPage resultsPage = new ResultsPage(driver);
@@ -36,7 +35,7 @@ public class YouTubeTest extends TestInit {
         maximizeWindow();
         homePage.clickSuggestionFieldInDropDownMenuByIndex(secondSuggestionField);
 
-        resultsPage.clickOnVideoByIndex(fourthVideo);
+        resultsPage.clickOnVideoByIndex();
         videoPage.clickOnAuthorAvatar();
         sleep(10000);
         channelPage.clickOnSubscribe();

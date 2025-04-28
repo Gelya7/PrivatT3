@@ -1,38 +1,44 @@
 package pages;
+
 import baseClasses.BasePage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import java.time.Instant;
 import java.util.List;
-
+import java.util.NoSuchElementException;
 
 public class ResultsPage extends BasePage {
     public ResultsPage(WebDriver driver) {
         super(driver);
     }
-    private final String VIDEO_LIST = "//ytd-thumbnail[@class='style-scope ytd-video-renderer']";
-    private final String NAME_VIDEO = "//yt-formatted-string[contains(@class, 'ytd-video-renderer')]";
-
-    public void clickOnVideoByIndex(int index) {
 
 
+    public void clickOnVideoByIndex() {
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.xpath("//div[@id='dismissible']/descendant::ytd-thumbnail"), 5));
+        List<WebElement> videos = driver.findElements(By.xpath("//div[@id='dismissible']/descendant::ytd-thumbnail"));
 
+        if (videos.size() >= 4) {
+            WebElement fourthVideo = videos.get(3); // Індекс 3 = 4-те відео
 
+            try {
+                WebElement icon = fourthVideo.findElement(By.xpath("//div[contains(@id,'channel-info')]/ytd-channel-name"));
 
-        // цей двіж треба обробить іф-ом
-        // бо якщо це не відео а посилання на інший сайт то тест відпрацьоватиме не вірно
-        // тому потрібно його переривати з відповідним ексепшеном,
-        // типу на 4-му місці не відео а посилання на інший ресур
+                if (icon.isDisplayed()) {
+                    System.out.println("Іконка знайдена, клікаємо на відео.");
+                    fourthVideo.click();
+                } else {
+                    throw new RuntimeException("Іконка не відображається біля 4-го відео!");
+                }
 
+            } catch (NoSuchElementException e) {
+                throw new RuntimeException("Іконка не знайдена біля 4-го відео!");
+            }
 
-//        if ()
-//
-        try {
-            clickOnElementByIndex(VIDEO_LIST, index);
-       } catch (Exception e) {
-           throw new RuntimeException("Помилка при кліку на відео за індексом " + index, e);
-      }
+        } else {
+            throw new RuntimeException("Менше ніж 4 відео у результатах!");
+        }
     }
-
-    }
+}
